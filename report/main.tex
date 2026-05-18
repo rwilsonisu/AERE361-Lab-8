@@ -1,0 +1,95 @@
+\documentclass{article}
+
+% Adds the url command
+\usepackage{hyperref}
+% To remove paragraph indentation
+\usepackage{parskip}
+% Adds line cut to urls
+\usepackage{xurl}
+\usepackage{multirow}
+
+% Update these:
+\title{Lab 8 Report}
+\date{Due: 03/31/2026 @ 11:00 AM}
+\author{Ryan Wilson}
+\begin{document}
+\maketitle
+\newpage
+
+\section{Integer Ranges}
+\begin{table}[h!]
+\caption{Integer ranges by size}
+\label{int-ranges}
+\begin{tabular}{lllll}
+\multirow{2}{*}{Size} & \multicolumn{2}{l}{Unsigned} & \multicolumn{2}{l}{Signed} \\
+& Min. Value & Max. Value & Min. Value & Max. Value \\
+\hline
+8-bit & 0 & 255 & -128 & 127 \\
+16-bit & 0 & 65,535 & -32,768 & 32,767 \\
+32-bit & 0 & 4,294,967,295 & -2,147,483,648 & 2,147,483,647 \\
+64-bit & 0 & 18,446,744,073,709,551,615 & -9,223,372,036,854,775,808 & 9,223,372,036,854,775,807 \\
+\end{tabular}
+\end{table}
+
+\section{8-bit Unsigned Representations}
+\begin{tabular}{cc}
+  Decimal & Binary \\
+  \hline
+  98 & 01100010 \\
+  0 & 00000000 \\
+  1 & 00000001 \\
+  127 & 01111111 \\
+  255 & 11111111 \\
+\end{tabular}
+
+\section{8-bit 2's Complement Signed Representations}
+\begin{tabular}{cc}
+  Decimal & Binary \\
+  \hline
+  +98 & 01100010 \\
+  -44 & 11010100 \\
+  -1 & 11111111 \\
+  0 & 00000000 \\
+  +1 & 00000001 \\
+  -128 & 10000000 \\
+  +127 & 01111111 \\
+\end{tabular}
+\newpage
+
+\section{32-bit Floating Points (Normalized and Denormalized)}
+\begin{itemize}
+\item \textbf{Normalized}
+  \begin{itemize}
+    \item Smallest positive: $1.0 \times 2^{-126} \approx 1.175 \times 10^{-38}$
+    \item Largest positive: $(2 - 2^{-23}) \times 2^{127} \approx 3.403 \times 10^{38}$
+    \item Smallest negative: $- (2 - 2^{-23}) \times 2^{127} \approx -3.403 \times 10^{38}$
+    \item Largest negative: $-1.0 \times 2^{-126} \approx -1.175 \times 10^{-38}$
+  \end{itemize}
+\item \textbf{Denormalized}
+  \begin{itemize}
+    \item Smallest positive: $2^{-149} \approx 1.4 \times 10^{-45}$
+    \item Largest positive: $(1 - 2^{-23}) \times 2^{-126} \approx 1.175 \times 10^{-38}$
+    \item Smallest negative: $- (1 - 2^{-23}) \times 2^{-126} \approx -1.175 \times 10^{-38}$
+    \item Largest negative: $-2^{-149} \approx -1.4 \times 10^{-45}$
+  \end{itemize}
+\end{itemize}
+
+\section{64-bit Floating Points (Normalized and Denormalized)}
+\begin{itemize}
+\item \textbf{Normalized}
+  \begin{itemize}
+    \item Smallest positive: $2^{-1022} \approx 2.225 \times 10^{-308}$
+    \item Largest positive: $(2 - 2^{-52}) \times 2^{1023} \approx 1.797 \times 10^{308}$
+    \item Smallest negative: $- (2 - 2^{-52}) \times 2^{1023} \approx -1.797 \times 10^{308}$
+    \item Largest negative: $-2^{-1022} \approx -2.225 \times 10^{-308}$
+  \end{itemize}
+\item \textbf{Denormalized}
+  \begin{itemize}
+    \item Smallest positive: $2^{-1074} \approx 4.9 \times 10^{-324}$
+    \item Largest positive: $(1 - 2^{-52}) \times 2^{-1022} \approx 2.225 \times 10^{-308}$
+    \item Smallest negative: $- (1 - 2^{-52}) \times 2^{-1022} \approx -2.225 \times 10^{-308}$
+    \item Largest negative: $-2^{-1074} \approx -4.9 \times 10^{-324}$
+  \end{itemize}
+\end{itemize}
+
+\end{document}

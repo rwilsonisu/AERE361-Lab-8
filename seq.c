@@ -1,0 +1,43 @@
+#include <stdio.h>
+
+int main(int argc, char *argv[]) {
+  int n = 10;
+  int doubleChecker = 0; //checks if in double precision or not
+
+  if(argc > 1 && argv[1][0] == '-' && argv[1][1] == 'd') {
+    //checks for "-d" flag
+    n = 20;
+    doubleChecker = 1;
+  } //end if
+
+  if(doubleChecker) { //runs if "-d" flag is used
+    double x1 = 11.0/2.0;
+    double x2 = 61.0/11.0;
+    printf("%lf\n%lf\n", x1, x2);
+
+    for(int i = 2; i < n; i++) {
+      //starts at i = 2 since x1 and x2 already printed
+      //double precision
+      double x3 = 111.0 - ((1130.0 - 3000.0/x1)/x2);
+      //x1 = x_(k-1), x2 = x_k, x3 = x_(k+1)
+      printf("%lf\n", x3);
+      x1 = x2; //x_k becomes x_(k-1)
+      x2 = x3; //x_(k+1) becomes x_k
+    } //end for
+  } else {
+      float x1 = 11.0f/2.0f; //less precise (f makes the float single precision)
+      float x2 = 61.0f/11.0f;
+      printf("%f\n%f\n", x1, x2);
+      
+      for(int i = 2; i < n; i++) {
+        //starts at i = 2 since x1 and x2 already printed
+	//single precision
+        float x3 = 111.0f - ((1130.0f - 3000.0f/x1)/x2);
+        //x1 = x_(k-1), x2 = x_k, x3 = x_(k+1)
+        printf("%f\n", x3);
+        x1 = x2; //x_k becomes x_(k-1)
+        x2 = x3; //x_(k+1) becomes x_k
+    } //end for
+  } //end ifs
+  return 0;
+} //end main

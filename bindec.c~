@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+void dtob(double num) {
+  // decimal to binary function
+  int numPart = (int)num; //integer for the whole number part
+  double decPart = num - numPart; //integer for the decimal part
+
+  char numBin[64];
+  int i = 0;
+  if(numPart == 0) {
+    numBin[i++] = '0'; //records and stores binary
+  } //end if
+  else {
+    while(numPart > 0) {
+      numBin[i++] = (numPart % 2) + '0'; //records and stores the binary remainder
+      numPart /= 2; //repeats division by 2 to minimize
+    } //end while
+  } //end else
+
+  for(int j = i - 1; j >= 0; j--) {
+    // reverse integer tech
+    printf("%c", numBin[j]);
+  } //end for
+
+  if(decPart > 0) {
+    printf(".");
+    for(int k = 0; k < 10; k++) {
+      decPart = *= 2; //multiplies by 2
+      int bit = (int)decPart; //takes out whole number binary part
+      printf("%d", bit);
+      decPart -= bit; // keeps only the remainder decimal
+      if(decPart == 0) {
+	break;
+      } //end if
+    } //end for
+  } //end if
+  printf("\n");
+} //end dtob
+
+void btod(char *bin) {
+  double ans = 0.0;
+  int l = strlen(bin);
+  int pt = -1;
+
+  for(int i = 0; i < l; i++) {
+    // finds the decimal point
+    if(bin[i] == '.') {
+      pt = i; //sets new point equal to i location
+      break;
+    } //end if
+  } //end for
+
+  if(pt == -1) {
+    pt = l; //sets point equal to the length if at -1
+  } //end if
+
+  for(int i = 0; i < pt; i++) {
+    // whole number part of binary
+    ans = ans*2 + (bin[i] - '0'); // uses base 2 to create answer
+  } //end for
+
+  double dec = 0.5; // first bit for decimal
+  for(int i = pt + 1; i < l; i++) {
+    // decimal part of binary
+    if(bin[i] == '1') {
+      ans += dec;
+    } //end if
+    dec /= 2; // next bit iteration
+  } //end for
+
+  printf("%f\n", ans);
+} //end btod
+
+int main(int argc, char *argv[]) {
+  if(argc != 3) {
+    // makes sure that the argc is in correct location in user input
+    // terminates if not
+    
+    printf("Type: ./bindec -d 'decimal num' OR -b 'binary num'\n");
+    return 1;
+  } //end if
+
+  if(strcmp(argv[1], "-d") == 0) { // checks if user wants decimal to binary
+    dtob(atof(argv[2]));
+  } else if(strcmp(argv[1], "-b") == 0) { // checks if user wants binary to decimal
+    btod(argv[2]);
+  } else {
+    printf("Flag not correct.\n"); // checks if flag is invalid
+    return 1;
+  } //end if
+  return 0;
+} //end main

@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+
+int validDouble(char *s, double *ans) {
+  //function to make sure double input is valid
+  char *lastOne; //last place strtod reads
+  *ans = strtod(s, &lastOne); //finds error, if any, and sets lastOne to invalid char
+
+  if(lastOne == s || *lastOne != '\0') {
+    // checks to see if a. lastOne found nothing or b. there are leftover characters that shouldn't be there
+    return 0;
+  } //end if
+  return 1;
+} //end validDouble
+
+int main(int argc, char *argv[]) {
+  if(argc != 4) {
+    printf("Type: ./quad 'a' 'b' 'c'\n");
+    return 1;
+  } //end if
+
+  double a, b, c;
+  // checker to see if inputs are valid numbers
+  if(!validDouble(argv[1], &a) ||
+     !validDouble(argv[2], &b) ||
+     !validDouble(argv[3], &c)) {
+    printf("Error: not a valid input.\n");
+    return 1;
+  } //end if
+  
+  if(a == 0) {
+    if(b == 0) {
+      printf("Cannot divide by 0 (b = 0).\n");
+    } else {
+      //prints x when a = 0 (so just x = -c/b)
+      printf("Linear root: %e\n", -c/b);
+    } //end if
+    return 0;
+  } //end if
+
+  double inside = b*b - 4*a*c;
+
+  if(inside < 0) {
+    // cannot give real values if value inside sqrt is less than 0
+    printf("Imaginary roots.\n");
+    return 0;
+  } //end if
+
+  double sqrtInside = sqrt(inside);
+  // takes the square root of inside
+  double x1, x2; //define roots
+
+  if(b >= 0) {
+    x1 = (-b-sqrtInside)/(2*a);
+    x2 = (2*c)/(-b-sqrtInside);
+  } else {
+    x1 = (-b+sqrtInside)/(2*a);
+    x2 = (2*c)/(-b+sqrtInside);
+  } //end if
+
+  printf("Roots: %e, %e\n", x1, x2);
+  return 0;
+} //end main

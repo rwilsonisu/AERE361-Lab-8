@@ -1,0 +1,99 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+typedef struct {
+  int sign;
+  int *exp; //dynamic array for exponent bits
+  int *frac; //dynamic array for significand bits
+  int bitExp;
+  int bitFrac;
+} MyFloat;
+
+void conversion(MyFloat *myfloat, double num) {
+  //function that converts decimal to MyFloat
+
+  if(num < 0) {
+    myfloat->sign = 1; //sets the sign bit and converts it to positive
+    num = -num;
+  } else {
+    myfloat->sign = 0;
+  } //end ifs
+
+  if(num == 0.0) { //for specifically 0
+    for(int i = 0; i < myfloat->bitExp; i++) {
+      myfloat->exp[i] = 0;
+    } //end for
+    for(int i = 0; i < myfloat->bitFrac; i++) {
+      myfloat->frac[i] = 0;
+    } //end for
+    return;
+  } //end if
+
+  int expo = 0;
+  //keeps num as 1 <= num < 2 (normalize)
+  while(num >= 2.0) {
+    num /= 2.0;
+    expo++;
+  } //end while
+  while(num < 1.0) {
+    num *= 2.0;
+    expo--;
+  } //end while
+
+  int bias = (1 << (myfloat->bitExp - 1)) - 1;
+  //bias = 2^(k-1) - 1
+  //k is number of bits
+  int store = expo + bias;
+  for(int i = myfloat->bitExp - 1; i >= 0; i--) {
+    myfloat->exp[i] = store % 2; //finds current bit
+    store /=2; //shifts bit rightward
+  } //end for
+
+  num -= 1.0; //removes leading 1
+  for(int i = 0; i < myfloat->bitFrac; i++) {
+    //stores each bit for fraction part
+    num *= 2; //bit to integer part
+    if(num >= 1.0) {
+      myfloat->frac[i] = 1;
+      num -= 1.0; //removes integer part
+    } else {
+      myfloat->frac[i] = 0;
+    } //end ifs
+  } //end for
+} //end conversion
+
+int main(int argc, char *argv[]) {
+  if(argc != 4) {
+    printf("Type: ./myFloat 'bitExp' 'bitFrac' 'number'\n");
+    return 1;
+  } //end if
+
+  int bitExpRead = atoi(argv[1]);
+  int bitFracRead = atoi(argv[2]);
+  double num = atof(argv[3]);
+
+  MyFloat myfloat;
+  myfloat.bitExp = bitExpRead;
+  myfloat.bitFrac = bitFracRead;
+  //allocate memory for arrays
+  myfloat.exp = malloc(bitExpRead*sizeof(int));
+  myfloat.frac = malloc(bitFracRead*sizeof(int));
+
+  conversion(&myfloat, num); //converts number
+
+  printf("Sign: %d\n", myfloat.sign);
+  printf("Exponent: ");
+  for(int i = 0; i < bitExpRead; i++) {
+    printf("%d", myfloat.exp[i]);
+  } //end for
+  printf("\nFraction: ");
+  for(int i = 0; i < bitFracRead; i++) {
+    printf("%d", myfloat.frac[i]);
+  } //end for
+  printf("\n");
+
+  free(myfloat.exp);
+  free(myfloat.frac); //free dynamic allocation memory
+  return 0;
+} //end main
